@@ -1,16 +1,16 @@
-import re
-import pandas as pd
+import re # Regex lib 
+import pandas as pd # Data Visualization and Manipulation 
 
-
+# Data Preprocessing 
 def preprocess(data):
     flag = False
-    pattern = "\d{2}/\d{2}/\d{2,4},\s\d{1,2}:\d{2}\s[ap]m\s-\s"
-    messages = re.split(pattern, data)[1:]
+    pattern = "\d{2}/\d{2}/\d{2,4},\s\d{1,2}:\d{2}\s[ap]m\s-\s" # Regex pattern to match date and time 
+    messages = re.split(pattern, data)[1:] # splits the data into messages based upon the pattern, The [1:] is used to remove and leading empty empty entries 
     if len(messages) is 0:
         pattern = "\d{2}/\d{2}/\d{2,4},\s\d{1,2}:\d{2}\s-\s"
-        messages = re.split(pattern, data)[1:]
+        messages = re.split(pattern, data)[1:] # Flag is set as true, if the split is resulted in no msgs indicating a diff date format might be present.
         flag = True
-    dates = re.findall(pattern, data)
+    dates = re.findall(pattern, data) # Extracts all the dates and the time strings used in the regex pattern 
     for i in range(len(dates)):
         dates[i] = dates[i].replace("\u202f", " ")
     if not flag:
@@ -65,7 +65,7 @@ def preprocess(data):
     period = []
     for hour in df[['day_name', 'hour']]['hour']:
         if hour == 23:
-            period.append(str(hour) + "-" + str('00'))
+            period.append(str(hour) + "-" + str('00'))    # Converting time from 14-15 to 2-3 
         elif hour == 0:
             period.append(str('00') + "-" + str(hour + 1))
         else:
