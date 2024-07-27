@@ -1,19 +1,19 @@
-from urlextract import URLExtract
-from wordcloud import WordCloud
-from collections import Counter
-from better_profanity import profanity
-from textblob import TextBlob
-import pandas as pd
-import emoji
+from urlextract import URLExtract # used for extracting the urls from the text 
+from wordcloud import WordCloud # used for generating the word cloud 
+from collections import Counter # used for counting the frequencies of the items 
+from better_profanity import profanity # used for checking profane words  ie inapp, vulgar 
+from textblob import TextBlob # provides the text processing capabilities 
+import pandas as pd # data vis and manip 
+import emoji # Handles emojis 
 
 extractor = URLExtract()
 
 
 def fetch_stats(selected_user, df):
     if selected_user != 'Overall':
-        df = df[df['user'] == selected_user]
+        df = df[df['user'] == selected_user] # creating a mask for the specific user to be displayed if not overall 
 
-    num_messages = df.shape[0]
+    num_messages = df.shape[0] # Number of msgs sent 
     words = []
     links = []
     for message in df['messages']:
