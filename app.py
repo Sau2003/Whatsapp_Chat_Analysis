@@ -1,5 +1,4 @@
-import streamlit as st
-
+import streamlit as st # Used for making web applications 
 import preprocessor
 import utility
 import matplotlib.pyplot as plt
@@ -22,15 +21,15 @@ if uploaded_file is not None:
     # To read file as bytes:
     bytes_data = uploaded_file.getvalue()
     data = bytes_data.decode("utf-8")
-    df = preprocessor.preprocess(data)
+    df = preprocessor.preprocess(data) # calling the fun preprocess
 
     user_list = df['user'].unique().tolist()
     try:
-        user_list.remove('group_notifications')
+        user_list.remove('group_notifications') # removing additional grp notif from list 
     except:
         pass
-    user_list.sort()
-    user_list.insert(0, 'Overall')
+    user_list.sort() # To sort all the names of members in ascending order 
+    user_list.insert(0, 'Overall') # Inserting 'Overall' at top pos 
 
     selected_option = st.sidebar.selectbox("Show Analysis", user_list)
 
@@ -38,7 +37,7 @@ if uploaded_file is not None:
         # stats area
         st.write("These are the Analysis:")
 
-        num_messages, words, num_media, num_links = utility.fetch_stats(selected_option, df)
+        num_messages, words, num_media, num_links = utility.fetch_stats(selected_option, df) # calling the fetch_stats fun 
 
         st.title('Top Statistics')
         col1, col2, col3, col4 = st.columns(4)
@@ -60,7 +59,7 @@ if uploaded_file is not None:
         timeline = utility.monthly_timeline(selected_option, df)
         fig, ax = plt.subplots()
         ax.plot(timeline['time'], timeline['messages'], color='red')
-        plt.xticks(rotation='vertical')
+        plt.xticks(rotation='vertical')                  # Line plt for monthly timeline 
         st.pyplot(fig)
 
         # daily timeline
@@ -120,8 +119,8 @@ if uploaded_file is not None:
         st.pyplot(fig)
 
         # most common words
-        most_common_words_df, emoji_df, profane_df = utility.most_common_words_emojis_and_profane_words(selected_option,
-                                                                                                        df)
+        most_common_words_df, emoji_df, profane_df = utility.most_common_words_emojis_and_profane_words(selected_option,df)
+        
         plt.rcParams['font.family'] = 'Segoe UI Emoji'
         fig, ax = plt.subplots()
         ax.barh(most_common_words_df[0], most_common_words_df[1], color='purple')
